@@ -30,176 +30,6 @@ const directDomains = [
 // 默认优选IP来源URL
 const defaultIPURL = 'https://raw.githubusercontent.com/qwer-search/bestip/refs/heads/main/kejilandbestip.txt';
 
-// Cloudflare 官方 IP 段列表（CIDR）
-const cloudflareCIDRs = [
-    '104.16.0.0/13',
-    '104.24.0.0/14',
-    '172.64.0.0/13',
-    '173.245.48.0/20',
-    '188.114.96.0/20',
-    '190.93.240.0/20',
-    '197.234.240.0/22',
-    '198.41.128.0/17',
-    '198.41.192.0/19',
-    '198.41.224.0/20',
-    '198.41.240.0/20',
-    '198.41.244.0/22',
-    '198.41.248.0/21',
-    '198.41.252.0/22',
-    '198.41.254.0/23',
-    '198.41.255.0/24',
-    '131.0.72.0/22',
-    '141.101.64.0/18',
-    '162.158.0.0/15',
-    '162.158.16.0/20',
-    '162.158.32.0/20',
-    '162.158.48.0/20',
-    '162.158.64.0/20',
-    '162.158.80.0/20',
-    '162.158.96.0/20',
-    '162.158.112.0/20',
-    '162.158.128.0/20',
-    '162.158.144.0/20',
-    '162.158.160.0/20',
-    '162.158.176.0/20',
-    '162.158.192.0/20',
-    '162.158.208.0/20',
-    '162.158.224.0/20',
-    '162.158.240.0/20',
-    '172.64.0.0/13',
-    '172.64.8.0/21',
-    '172.64.16.0/21',
-    '172.64.24.0/21',
-    '172.64.32.0/21',
-    '172.64.40.0/21',
-    '172.64.48.0/21',
-    '172.64.56.0/21',
-    '172.64.64.0/21',
-    '172.64.72.0/21',
-    '172.64.80.0/21',
-    '172.64.88.0/21',
-    '172.64.96.0/21',
-    '172.64.104.0/21',
-    '172.64.112.0/21',
-    '172.64.120.0/21',
-    '172.64.128.0/21',
-    '172.64.136.0/21',
-    '172.64.144.0/21',
-    '172.64.152.0/21',
-    '172.64.160.0/21',
-    '172.64.168.0/21',
-    '172.64.176.0/21',
-    '172.64.184.0/21',
-    '172.64.192.0/21',
-    '172.64.200.0/21',
-    '172.64.208.0/21',
-    '172.64.216.0/21',
-    '172.64.224.0/21',
-    '172.64.232.0/21',
-    '172.64.240.0/21',
-    '172.64.248.0/21',
-    '172.65.0.0/13',
-    '172.65.8.0/21',
-    '172.65.16.0/21',
-    '172.65.24.0/21',
-    '172.65.32.0/21',
-    '172.65.40.0/21',
-    '172.65.48.0/21',
-    '172.65.56.0/21',
-    '172.65.64.0/21',
-    '172.65.72.0/21',
-    '172.65.80.0/21',
-    '172.65.88.0/21',
-    '172.65.96.0/21',
-    '172.65.104.0/21',
-    '172.65.112.0/21',
-    '172.65.120.0/21',
-    '172.65.128.0/21',
-    '172.65.136.0/21',
-    '172.65.144.0/21',
-    '172.65.152.0/21',
-    '172.65.160.0/21',
-    '172.65.168.0/21',
-    '172.65.176.0/21',
-    '172.65.184.0/21',
-    '172.65.192.0/21',
-    '172.65.200.0/21',
-    '172.65.208.0/21',
-    '172.65.216.0/21',
-    '172.65.224.0/21',
-    '172.65.232.0/21',
-    '172.65.240.0/21',
-    '172.65.248.0/21',
-    '172.66.0.0/13',
-    '172.66.8.0/21',
-    '172.66.16.0/21',
-    '172.66.24.0/21',
-    '172.66.32.0/21',
-    '172.66.40.0/21',
-    '172.66.48.0/21',
-    '172.66.56.0/21',
-    '172.66.64.0/21',
-    '172.66.72.0/21',
-    '172.66.80.0/21',
-    '172.66.88.0/21',
-    '172.66.96.0/21',
-    '172.66.104.0/21',
-    '172.66.112.0/21',
-    '172.66.120.0/21',
-    '172.66.128.0/21',
-    '172.66.136.0/21',
-    '172.66.144.0/21',
-    '172.66.152.0/21',
-    '172.66.160.0/21',
-    '172.66.168.0/21',
-    '172.66.176.0/21',
-    '172.66.184.0/21',
-    '172.66.192.0/21',
-    '172.66.200.0/21',
-    '172.66.208.0/21',
-    '172.66.216.0/21',
-    '172.66.224.0/21',
-    '172.66.232.0/21',
-    '172.66.240.0/21',
-    '172.66.248.0/21',
-    '172.67.0.0/13',
-    '172.67.8.0/21',
-    '172.67.16.0/21',
-    '172.67.24.0/21',
-    '172.67.32.0/21',
-    '172.67.40.0/21',
-    '172.67.48.0/21',
-    '172.67.56.0/21',
-    '172.67.64.0/21',
-    '172.67.72.0/21',
-    '172.67.80.0/21',
-    '172.67.88.0/21',
-    '172.67.96.0/21',
-    '172.67.104.0/21',
-    '172.67.112.0/21',
-    '172.67.120.0/21',
-    '172.67.128.0/21',
-    '172.67.136.0/21',
-    '172.67.144.0/21',
-    '172.67.152.0/21',
-    '172.67.160.0/21',
-    '172.67.168.0/21',
-    '172.67.176.0/21',
-    '172.67.184.0/21',
-    '172.67.192.0/21',
-    '172.67.200.0/21',
-    '172.67.208.0/21',
-    '172.67.216.0/21',
-    '172.67.224.0/21',
-    '172.67.232.0/21',
-    '172.67.240.0/21',
-    '172.67.248.0/21',
-    '173.245.48.0/20',
-    '188.114.96.0/20',
-    '190.93.240.0/20',
-    '197.234.240.0/22'
-];
-
 // UUID验证
 function isValidUUID(str) {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -279,7 +109,119 @@ async function fetchAndParseWetest(url) {
     }
 }
 
-// 从GitHub获取优选IP
+// 整理成数组
+async function 整理成数组(内容) {
+    var 替换后的内容 = 内容.replace(/[	"'\r\n]+/g, ',').replace(/,+/g, ',');
+    if (替换后的内容.charAt(0) == ',') 替换后的内容 = 替换后的内容.slice(1);
+    if (替换后的内容.charAt(替换后的内容.length - 1) == ',') 替换后的内容 = 替换后的内容.slice(0, 替换后的内容.length - 1);
+    const 地址数组 = 替换后的内容.split(',');
+    return 地址数组;
+}
+
+// 请求优选API
+async function 请求优选API(urls, 默认端口 = '443', 超时时间 = 3000) {
+    if (!urls?.length) return [];
+    const results = new Set();
+    await Promise.allSettled(urls.map(async (url) => {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 超时时间);
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            let text = '';
+            try {
+                const buffer = await response.arrayBuffer();
+                const contentType = (response.headers.get('content-type') || '').toLowerCase();
+                const charset = contentType.match(/charset=([^\s;]+)/i)?.[1]?.toLowerCase() || '';
+
+                // 根据 Content-Type 响应头判断编码优先级
+                let decoders = ['utf-8', 'gb2312']; // 默认优先 UTF-8
+                if (charset.includes('gb') || charset.includes('gbk') || charset.includes('gb2312')) {
+                    decoders = ['gb2312', 'utf-8']; // 如果明确指定 GB 系编码，优先尝试 GB2312
+                }
+
+                // 尝试多种编码解码
+                let decodeSuccess = false;
+                for (const decoder of decoders) {
+                    try {
+                        const decoded = new TextDecoder(decoder).decode(buffer);
+                        // 验证解码结果的有效性
+                        if (decoded && decoded.length > 0 && !decoded.includes('\ufffd')) {
+                            text = decoded;
+                            decodeSuccess = true;
+                            break;
+                        } else if (decoded && decoded.length > 0) {
+                            // 如果有替换字符 (U+FFFD)，说明编码不匹配，继续尝试下一个编码
+                            continue;
+                        }
+                    } catch (e) {
+                        // 该编码解码失败，尝试下一个
+                        continue;
+                    }
+                }
+
+                // 如果所有编码都失败或无效，尝试 response.text()
+                if (!decodeSuccess) {
+                    text = await response.text();
+                }
+
+                // 如果返回的是空或无效数据，返回
+                if (!text || text.trim().length === 0) {
+                    return;
+                }
+            } catch (e) {
+                console.error('Failed to decode response:', e);
+                return;
+            }
+            const lines = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+            const isCSV = lines.length > 1 && lines[0].includes(',');
+            const IPV6_PATTERN = /^[^\[\]]*:[^\[\]]*:[^\[\]]/;
+            if (!isCSV) {
+                lines.forEach(line => {
+                    const hashIndex = line.indexOf('#');
+                    const [hostPart, remark] = hashIndex > -1 ? [line.substring(0, hashIndex), line.substring(hashIndex)] : [line, ''];
+                    let hasPort = false;
+                    if (hostPart.startsWith('[')) {
+                        hasPort = /\]:(\d+)$/.test(hostPart);
+                    } else {
+                        const colonIndex = hostPart.lastIndexOf(':');
+                        hasPort = colonIndex > -1 && /^\d+$/.test(hostPart.substring(colonIndex + 1));
+                    }
+                    const port = new URL(url).searchParams.get('port') || 默认端口;
+                    results.add(hasPort ? line : `${hostPart}:${port}${remark}`);
+                });
+            } else {
+                const headers = lines[0].split(',').map(h => h.trim());
+                const dataLines = lines.slice(1);
+                if (headers.includes('IP地址') && headers.includes('端口') && headers.includes('数据中心')) {
+                    const ipIdx = headers.indexOf('IP地址'), portIdx = headers.indexOf('端口');
+                    const remarkIdx = headers.indexOf('国家') > -1 ? headers.indexOf('国家') :
+                        headers.indexOf('城市') > -1 ? headers.indexOf('城市') : headers.indexOf('数据中心');
+                    const tlsIdx = headers.indexOf('TLS');
+                    dataLines.forEach(line => {
+                        const cols = line.split(',').map(c => c.trim());
+                        if (tlsIdx !== -1 && cols[tlsIdx]?.toLowerCase() !== 'true') return;
+                        const wrappedIP = IPV6_PATTERN.test(cols[ipIdx]) ? `[${cols[ipIdx]}]` : cols[ipIdx];
+                        results.add(`${wrappedIP}:${cols[portIdx]}#${cols[remarkIdx]}`);
+                    });
+                } else if (headers.some(h => h.includes('IP')) && headers.some(h => h.includes('延迟')) && headers.some(h => h.includes('下载速度'))) {
+                    const ipIdx = headers.findIndex(h => h.includes('IP'));
+                    const delayIdx = headers.findIndex(h => h.includes('延迟'));
+                    const speedIdx = headers.findIndex(h => h.includes('下载速度'));
+                    const port = new URL(url).searchParams.get('port') || 默认端口;
+                    dataLines.forEach(line => {
+                        const cols = line.split(',').map(c => c.trim());
+                        const wrappedIP = IPV6_PATTERN.test(cols[ipIdx]) ? `[${cols[ipIdx]}]` : cols[ipIdx];
+                        results.add(`${wrappedIP}:${port}#CF优选 ${cols[delayIdx]}ms ${cols[speedIdx]}MB/s`);
+                    });
+                }
+            }
+        } catch (e) { }
+    }));
+    return Array.from(results);
+}
+
+// 从GitHub获取优选IP（保留原有功能，同时支持优选API）
 async function fetchAndParseNewIPs(piu) {
     const url = piu || defaultIPURL;
     try {
@@ -580,22 +522,105 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
         }
     }
 
-    // GitHub优选
+    // GitHub优选 / 优选API
     if (egi) {
         try {
-            const newIPList = await fetchAndParseNewIPs(piu);
-            if (newIPList.length > 0) {
-                // 确保至少有一个协议被启用
-                const hasProtocol = evEnabled || etEnabled || vmEnabled;
-                const useVL = hasProtocol ? evEnabled : true;  // 如果没有选择任何协议，默认使用VLESS
-                
-                if (useVL) {
-                    finalLinks.push(...generateLinksFromNewIPs(newIPList, user, nodeDomain, wsPath));
+            // 检查是否是优选API URL（以https://开头）
+            if (piu && piu.toLowerCase().startsWith('https://')) {
+                // 从优选API获取IP列表
+                const 优选API的IP = await 请求优选API([piu]);
+                if (优选API的IP && 优选API的IP.length > 0) {
+                    // 解析IP字符串格式：IP:端口#备注
+                    const IP列表 = 优选API的IP.map(原始地址 => {
+                        // 统一正则: 匹配 域名/IPv4/IPv6地址 + 可选端口 + 可选备注
+                        const regex = /^(\[[\da-fA-F:]+\]|[\d.]+|[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*)(?::(\d+))?(?:#(.+))?$/;
+                        const match = 原始地址.match(regex);
+
+                        if (match) {
+                            const 节点地址 = match[1].replace(/[\[\]]/g, ''); // 移除IPv6的方括号
+                            const 节点端口 = match[2] || 443;
+                            const 节点备注 = match[3] || 节点地址;
+                            return {
+                                ip: 节点地址,
+                                port: parseInt(节点端口),
+                                name: 节点备注
+                            };
+                        }
+                        return null;
+                    }).filter(item => item !== null);
+                    
+                    if (IP列表.length > 0) {
+                        const hasProtocol = evEnabled || etEnabled || vmEnabled;
+                        const useVL = hasProtocol ? evEnabled : true;
+                        
+                        if (useVL) {
+                            finalLinks.push(...generateLinksFromNewIPs(IP列表, user, nodeDomain, wsPath));
+                        }
+                    }
                 }
-                // GitHub IP只支持VLESS格式
+            } else if (piu && piu.includes('\n')) {
+                // 支持多行文本，包含混合格式（优选API URL + IP列表）
+                const 完整优选列表 = await 整理成数组(piu);
+                const 优选API = [], 优选IP = [], 其他节点 = [];
+                
+                for (const 元素 of 完整优选列表) {
+                    if (元素.toLowerCase().startsWith('https://')) {
+                        优选API.push(元素);
+                    } else if (元素.toLowerCase().includes('://')) {
+                        其他节点.push(元素);
+                    } else {
+                        优选IP.push(元素);
+                    }
+                }
+                
+                // 从优选API获取IP
+                if (优选API.length > 0) {
+                    const 优选API的IP = await 请求优选API(优选API);
+                    优选IP.push(...优选API的IP);
+                }
+                
+                // 解析所有IP并生成节点
+                if (优选IP.length > 0) {
+                    const IP列表 = 优选IP.map(原始地址 => {
+                        const regex = /^(\[[\da-fA-F:]+\]|[\d.]+|[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*)(?::(\d+))?(?:#(.+))?$/;
+                        const match = 原始地址.match(regex);
+
+                        if (match) {
+                            const 节点地址 = match[1].replace(/[\[\]]/g, '');
+                            const 节点端口 = match[2] || 443;
+                            const 节点备注 = match[3] || 节点地址;
+                            return {
+                                ip: 节点地址,
+                                port: parseInt(节点端口),
+                                name: 节点备注
+                            };
+                        }
+                        return null;
+                    }).filter(item => item !== null);
+                    
+                    if (IP列表.length > 0) {
+                        const hasProtocol = evEnabled || etEnabled || vmEnabled;
+                        const useVL = hasProtocol ? evEnabled : true;
+                        
+                        if (useVL) {
+                            finalLinks.push(...generateLinksFromNewIPs(IP列表, user, nodeDomain, wsPath));
+                        }
+                    }
+                }
+            } else {
+                // 原有的GitHub优选逻辑（单URL）
+                const newIPList = await fetchAndParseNewIPs(piu);
+                if (newIPList.length > 0) {
+                    const hasProtocol = evEnabled || etEnabled || vmEnabled;
+                    const useVL = hasProtocol ? evEnabled : true;
+                    
+                    if (useVL) {
+                        finalLinks.push(...generateLinksFromNewIPs(newIPList, user, nodeDomain, wsPath));
+                    }
+                }
             }
         } catch (error) {
-            console.error('获取GitHub IP失败:', error);
+            console.error('获取优选IP失败:', error);
         }
     }
 
@@ -793,58 +818,6 @@ async function testLatency(host, port = 443, timeout = 5000) {
             error: error.message || '未知错误'
         };
     }
-}
-
-// 从 CIDR 生成随机 IP
-function generateRandomIPFromCIDR(cidr) {
-    const [baseIP, prefixLength] = cidr.split('/');
-    const prefix = parseInt(prefixLength);
-    const hostBits = 32 - prefix;
-    
-    // 将 IP 地址转换为整数
-    const ipInt = baseIP.split('.').reduce((a, p, i) => a | (parseInt(p) << (24 - i * 8)), 0);
-    
-    // 生成随机偏移量
-    const randomOffset = Math.floor(Math.random() * Math.pow(2, hostBits));
-    
-    // 计算随机 IP
-    const mask = (0xFFFFFFFF << hostBits) >>> 0;
-    const randomIP = (((ipInt & mask) >>> 0) + randomOffset) >>> 0;
-    
-    // 转换回 IP 地址格式
-    return [
-        (randomIP >>> 24) & 0xFF,
-        (randomIP >>> 16) & 0xFF,
-        (randomIP >>> 8) & 0xFF,
-        randomIP & 0xFF
-    ].join('.');
-}
-
-// 从 Cloudflare CIDR 段生成 IP 列表（每个段选一个）
-function generateIPsFromCIDRs(cidrList, minCount) {
-    const uniqueCIDRs = [...new Set(cidrList)]; // 去重
-    const result = [];
-    
-    // 如果需要的数量少于 CIDR 段数量，从每个段选一个
-    if (minCount <= uniqueCIDRs.length) {
-        // 随机打乱 CIDR 列表，然后选择前 minCount 个
-        const shuffled = [...uniqueCIDRs].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, minCount).map(cidr => generateRandomIPFromCIDR(cidr));
-    } else {
-        // 如果需要的数量多于 CIDR 段数量，先从每个段选一个，然后循环选择
-        const selectedCIDRs = [];
-        for (let i = 0; i < minCount; i++) {
-            selectedCIDRs.push(uniqueCIDRs[i % uniqueCIDRs.length]);
-        }
-        return selectedCIDRs.map(cidr => generateRandomIPFromCIDR(cidr));
-    }
-}
-
-// 生成候选 IP 列表（从每个 CIDR 段选一个）
-function generateCandidateIPs(testCount = 5000) {
-    // 生成指定数量的候选 IP
-    const candidateCount = Math.min(testCount, cloudflareCIDRs.length * 100); // 限制最大数量
-    return generateIPsFromCIDRs(cloudflareCIDRs, candidateCount);
 }
 
 // 批量测试延迟
@@ -1240,14 +1213,6 @@ function generateHomePage(scuValue) {
             #testResult div, #batchTestResult div {
                 color: #f5f5f7 !important;
             }
-            
-            #optimizeResult {
-                color: #f5f5f7 !important;
-            }
-            
-            #optimizeResult div {
-                color: #f5f5f7 !important;
-            }
         }
     </style>
 </head>
@@ -1380,22 +1345,6 @@ function generateHomePage(scuValue) {
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="testSingleLatency()" id="testBtn" style="margin-top: 0;">测试延迟</button>
                 <div id="testResult" style="display: none; margin-top: 12px; padding: 12px; background: rgba(142, 142, 147, 0.12); border-radius: 8px; font-size: 14px;"></div>
-            </div>
-            
-            <div class="form-group" style="margin-top: 24px;">
-                <label>自动优选（Cloudflare官方IP段）</label>
-                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                    <input type="number" id="optimizeCount" placeholder="优选数量" value="10" min="1" max="100" style="flex: 1; min-width: 0;">
-                    <input type="number" id="optimizePort" placeholder="端口" value="443" style="flex: 1; min-width: 0;">
-                    <input type="number" id="optimizeTimeout" placeholder="超时(ms)" value="5000" style="flex: 1; min-width: 0;">
-                </div>
-                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                    <input type="number" id="optimizeTestCount" placeholder="测试数量" value="5000" min="100" max="10000" style="flex: 1; min-width: 0;">
-                    <input type="number" id="optimizeConcurrency" placeholder="并发数" value="200" min="1" max="500" style="flex: 1; min-width: 0;">
-                </div>
-                <small style="display: block; margin-top: -12px; margin-bottom: 12px; color: #86868b; font-size: 13px; padding-left: 0;">测试数量：从CIDR段生成的候选IP数量 | 并发数：同时测试的IP数量</small>
-                <button type="button" class="btn" onclick="autoOptimize()" id="optimizeBtn" style="margin-top: 0; background: #34c759;">开始自动优选</button>
-                <div id="optimizeResult" style="display: none; margin-top: 12px; max-height: 400px; overflow-y: auto;"></div>
             </div>
             
             <div class="form-group" style="margin-top: 24px;">
@@ -1778,241 +1727,6 @@ function generateHomePage(scuValue) {
             }
         }
         
-        // 前端测试单个 IP 延迟（使用用户网络）
-        async function testIPLatency(ip, port, timeout) {
-            const startTime = performance.now();
-            try {
-                const protocol = port === 443 || port === 8443 ? 'https' : 'http';
-                const testUrl = \`\${protocol}://\${ip}:\${port}/cdn-cgi/trace\`;
-                
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), timeout);
-                
-                try {
-                    const response = await fetch(testUrl, {
-                        signal: controller.signal,
-                        headers: {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                        }
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    const latency = Math.round(performance.now() - startTime);
-                    
-                    if (response.ok) {
-                        const text = await response.text();
-                        const ipMatch = text.match(/ip=([^\\s]+)/);
-                        const locMatch = text.match(/loc=([^\\s]+)/);
-                        const coloMatch = text.match(/colo=([^\\s]+)/);
-                        
-                        return {
-                            success: true,
-                            ip: ip,
-                            port: port,
-                            latency: latency,
-                            location: locMatch ? locMatch[1] : null,
-                            colo: coloMatch ? coloMatch[1] : null
-                        };
-                    } else {
-                        return {
-                            success: false,
-                            ip: ip,
-                            port: port,
-                            latency: latency,
-                            error: \`HTTP \${response.status}\`
-                        };
-                    }
-                } catch (fetchError) {
-                    clearTimeout(timeoutId);
-                    const latency = Math.round(performance.now() - startTime);
-                    
-                    if (fetchError.name === 'AbortError') {
-                        return {
-                            success: false,
-                            ip: ip,
-                            port: port,
-                            latency: timeout,
-                            error: '请求超时'
-                        };
-                    }
-                    
-                    return {
-                        success: false,
-                        ip: ip,
-                        port: port,
-                        latency: latency,
-                        error: fetchError.message || '连接失败'
-                    };
-                }
-            } catch (error) {
-                const latency = Math.round(performance.now() - startTime);
-                return {
-                    success: false,
-                    ip: ip,
-                    port: port,
-                    latency: latency,
-                    error: error.message || '未知错误'
-                };
-            }
-        }
-        
-        // 自动优选功能（前端测试延迟）
-        async function autoOptimize() {
-            const count = parseInt(document.getElementById('optimizeCount').value) || 10;
-            const port = parseInt(document.getElementById('optimizePort').value) || 443;
-            const timeout = parseInt(document.getElementById('optimizeTimeout').value) || 5000;
-            const testCount = parseInt(document.getElementById('optimizeTestCount').value) || 5000;
-            const concurrency = parseInt(document.getElementById('optimizeConcurrency').value) || 200;
-            const optimizeBtn = document.getElementById('optimizeBtn');
-            const optimizeResult = document.getElementById('optimizeResult');
-            
-            if (count < 1 || count > 100) {
-                alert('优选数量必须在 1-100 之间');
-                return;
-            }
-            
-            if (testCount < 100 || testCount > 10000) {
-                alert('测试数量必须在 100-10000 之间');
-                return;
-            }
-            
-            if (concurrency < 1 || concurrency > 500) {
-                alert('并发数必须在 1-500 之间');
-                return;
-            }
-            
-            optimizeBtn.disabled = true;
-            optimizeBtn.textContent = '优选中...';
-            optimizeResult.style.display = 'block';
-            optimizeResult.innerHTML = '<div style="padding: 12px; text-align: center; color: #86868b;">正在生成候选 IP 列表...</div>';
-            
-            try {
-                // 步骤1: 从后端获取候选 IP 列表
-                const currentUrl = new URL(window.location.href);
-                const baseUrl = currentUrl.origin;
-                const optimizeUrl = \`\${baseUrl}/auto-optimize?testCount=\${testCount}\`;
-                
-                const response = await fetch(optimizeUrl);
-                const data = await response.json();
-                
-                if (!data.success || !data.ips || data.ips.length === 0) {
-                    optimizeResult.innerHTML = \`
-                        <div style="padding: 12px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; color: #ff3b30;">
-                            获取 IP 列表失败: \${data.error || '未知错误'}
-                        </div>
-                    \`;
-                    return;
-                }
-                
-                const candidateIPs = data.ips;
-                optimizeResult.innerHTML = \`<div style="padding: 12px; text-align: center; color: #86868b;">已生成 \${candidateIPs.length} 个候选 IP，正在测试延迟（并发: \${concurrency}）...</div>\`;
-                
-                // 步骤2: 使用批量测试API测试所有 IP 的延迟
-                // 注意：这里使用后端API，但用户说手动批量测试全部可用，说明后端测试逻辑是正确的
-                // 虽然是在Worker端测试，但至少能正常工作
-                const testResponse = await fetch(\`\${baseUrl}/batch-test\`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        hosts: candidateIPs,
-                        port: port,
-                        timeout: timeout,
-                        concurrency: concurrency
-                    })
-                });
-                
-                const testData = await testResponse.json();
-                
-                if (!testData.success) {
-                    optimizeResult.innerHTML = \`
-                        <div style="padding: 12px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; color: #ff3b30;">
-                            测试失败: \${testData.error || '未知错误'}
-                        </div>
-                    \`;
-                    return;
-                }
-                
-                const testResults = testData.results || [];
-                
-                // 步骤3: 筛选成功的测试结果并按延迟排序
-                const successResults = testResults.filter(r => r.success);
-                successResults.sort((a, b) => a.latency - b.latency);
-                
-                // 步骤4: 显示结果
-                let html = \`
-                    <div style="padding: 12px; background: rgba(52, 199, 89, 0.1); border-radius: 8px; margin-bottom: 12px;">
-                        <div style="font-weight: 600; margin-bottom: 4px; color: #34c759;">✓ 优选完成</div>
-                        <div style="font-size: 13px; color: #86868b;">成功优选: \${successResults.length} 个 IP（按延迟排序）</div>
-                    </div>
-                \`;
-                
-                if (successResults.length > 0) {
-                    const topResults = successResults.slice(0, count);
-                    topResults.forEach((result, index) => {
-                        html += \`
-                            <div style="padding: 12px; background: rgba(52, 199, 89, 0.1); border-radius: 8px; margin-bottom: 8px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                    <div style="font-weight: 600; color: #34c759;">#\${index + 1} \${result.host}:\${result.port}</div>
-                                    <div style="font-weight: 600; color: #1d1d1f;">\${result.latency}ms</div>
-                                </div>
-                                \${result.ip ? \`<div style="font-size: 13px; color: #86868b;">IP: \${result.ip}</div>\` : ''}
-                                \${result.location ? \`<div style="font-size: 13px; color: #86868b;">位置: \${result.location}</div>\` : ''}
-                                \${result.colo ? \`<div style="font-size: 13px; color: #86868b;">数据中心: \${result.colo}</div>\` : ''}
-                            </div>
-                        \`;
-                    });
-                    
-                    // 添加复制按钮
-                    const ipList = topResults.map(r => \`\${r.host}:\${r.port}\`).join('\\n');
-                    html += \`
-                        <button type="button" class="btn btn-secondary" onclick="copyOptimizedIPs()" style="margin-top: 12px; width: 100%;" id="copyOptimizeBtn">复制所有IP</button>
-                    \`;
-                    
-                    // 保存到全局变量以便复制
-                    window.optimizedIPs = ipList;
-                } else {
-                    html += \`
-                        <div style="padding: 12px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; color: #ff3b30;">
-                            未找到可用的 IP，请重试或增加超时时间
-                        </div>
-                    \`;
-                }
-                
-                optimizeResult.innerHTML = html;
-            } catch (error) {
-                optimizeResult.innerHTML = \`
-                    <div style="padding: 12px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; color: #ff3b30;">
-                        网络错误: \${error.message || '未知错误'}
-                    </div>
-                \`;
-            } finally {
-                optimizeBtn.disabled = false;
-                optimizeBtn.textContent = '开始自动优选';
-            }
-        }
-        
-        // 复制优选结果
-        function copyOptimizedIPs() {
-            if (window.optimizedIPs) {
-                navigator.clipboard.writeText(window.optimizedIPs).then(() => {
-                    const btn = document.getElementById('copyOptimizeBtn');
-                    if (btn) {
-                        const originalText = btn.textContent;
-                        btn.textContent = '已复制！';
-                        btn.style.background = '#34c759';
-                        setTimeout(() => {
-                            btn.textContent = originalText;
-                            btn.style.background = '';
-                        }, 2000);
-                    }
-                }).catch(err => {
-                    alert('复制失败: ' + err.message);
-                });
-            }
-        }
-        
         // 支持回车键触发测试
         document.addEventListener('DOMContentLoaded', function() {
             const testHostInput = document.getElementById('testHost');
@@ -2130,8 +1844,8 @@ export default {
             }
         }
         
-        // 自动优选 API: /auto-optimize?testCount=5000 (只生成 IP 列表，不测试)
-        if (path === '/auto-optimize') {
+        // 测试优选API API: /test-optimize-api?url=xxx&port=443
+        if (path === '/test-optimize-api') {
             if (request.method === 'OPTIONS') {
                 return new Response(null, {
                     headers: {
@@ -2142,30 +1856,30 @@ export default {
                 });
             }
             
+            const apiUrl = url.searchParams.get('url');
+            const port = url.searchParams.get('port') || '443';
+            const timeout = parseInt(url.searchParams.get('timeout') || '3000');
+            
+            if (!apiUrl) {
+                return new Response(JSON.stringify({ 
+                    success: false, 
+                    error: '缺少url参数' 
+                }), {
+                    status: 400,
+                    headers: { 
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+            }
+            
             try {
-                const testCount = parseInt(url.searchParams.get('testCount') || '5000');
-                
-                if (testCount < 100 || testCount > 10000) {
-                    return new Response(JSON.stringify({ 
-                        success: false, 
-                        error: 'testCount 必须在 100-10000 之间' 
-                    }), {
-                        status: 400,
-                        headers: { 
-                            'Content-Type': 'application/json; charset=utf-8',
-                            'Access-Control-Allow-Origin': '*'
-                        }
-                    });
-                }
-                
-                // 只生成 IP 列表，不测试（测试在前端进行，使用用户网络）
-                const candidateIPs = generateCandidateIPs(testCount);
-                
+                const results = await 请求优选API([apiUrl], port, timeout);
                 return new Response(JSON.stringify({ 
                     success: true, 
-                    ips: candidateIPs,
-                    total: candidateIPs.length,
-                    message: `生成了 ${candidateIPs.length} 个候选 IP`
+                    results: results,
+                    total: results.length,
+                    message: `成功获取 ${results.length} 个优选IP`
                 }, null, 2), {
                     headers: { 
                         'Content-Type': 'application/json; charset=utf-8',
