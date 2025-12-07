@@ -470,7 +470,7 @@ function generateVMessLinksFromSource(list, user, workerDomain, disableNonTLS = 
 }
 
 // 从GitHub IP生成链接（VLESS）
-function generateLinksFromNewIPs(list, user, workerDomain, customPath = '/') {
+function generateLinksFromNewIPs(list, user, workerDomain, customPath = '/', prefix = '') {
     const CF_HTTP_PORTS = [80, 8080, 8880, 2052, 2082, 2086, 2095];
     const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
     const links = [];
@@ -479,7 +479,17 @@ function generateLinksFromNewIPs(list, user, workerDomain, customPath = '/') {
 
     list.forEach(item => {
         // 直接使用item.name，不添加端口和协议后缀，保持简洁
-        const nodeName = item.name.replace(/\s/g, '_');
+        let nodeName = item.name.replace(/\s/g, '_');
+
+        // 根据prefix参数添加前缀
+        if (prefix === 'ip') {
+            // 显示IP作为前缀
+            nodeName = `${item.ip}_${nodeName}`;
+        } else if (prefix) {
+            // 使用自定义前缀
+            nodeName = `${prefix}_${nodeName}`;
+        }
+
         const port = item.port;
 
         if (CF_HTTPS_PORTS.includes(port)) {
@@ -497,7 +507,7 @@ function generateLinksFromNewIPs(list, user, workerDomain, customPath = '/') {
 }
 
 // 生成订阅内容
-async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4Enabled, ipv6Enabled, ispMobile, ispUnicom, ispTelecom, evEnabled, etEnabled, vmEnabled, disableNonTLS, customPath) {
+async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4Enabled, ipv6Enabled, ispMobile, ispUnicom, ispTelecom, evEnabled, etEnabled, vmEnabled, disableNonTLS, customPath, prefix = '') {
     const url = new URL(request.url);
     const finalLinks = [];
     const workerDomain = url.hostname;  // workerDomain始终是请求的hostname
@@ -588,7 +598,7 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
                         const useVL = hasProtocol ? evEnabled : true;
 
                         if (useVL) {
-                            finalLinks.push(...generateLinksFromNewIPs(IP列表, user, nodeDomain, wsPath));
+                            finalLinks.push(...generateLinksFromNewIPs(IP列表, user, nodeDomain, wsPath, prefix));
                         }
                     }
                 }
@@ -650,7 +660,7 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
                         const useVL = hasProtocol ? evEnabled : true;
 
                         if (useVL) {
-                            finalLinks.push(...generateLinksFromNewIPs(IP列表, user, nodeDomain, wsPath));
+                            finalLinks.push(...generateLinksFromNewIPs(IP列表, user, nodeDomain, wsPath, prefix));
                         }
                     }
                 }
@@ -662,7 +672,7 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
                     const useVL = hasProtocol ? evEnabled : true;
 
                     if (useVL) {
-                        finalLinks.push(...generateLinksFromNewIPs(newIPList, user, nodeDomain, wsPath));
+                        finalLinks.push(...generateLinksFromNewIPs(newIPList, user, nodeDomain, wsPath, prefix));
                     }
                 }
             }
@@ -1987,10 +1997,12 @@ export default {
             // 自定义路径
             const customPath = url.searchParams.get('path') || '/';
 
-            return await handleSubscriptionRequest(request, uuid, domain, piu, ipv4Enabled, ipv6Enabled, ispMobile, ispUnicom, ispTelecom, evEnabled, etEnabled, vmEnabled, disableNonTLS, customPath);
+            // 自定义前缀（可选：'ip' 显示IP地址，或任意文本）
+            const prefix = url.searchParams.get('prefix') || '';
+
+            return await handleSubscriptionRequest(request, uuid, domain, piu, ipv4Enabled, ipv6Enabled, ispMobile, ispUnicom, ispTelecom, evEnabled, etEnabled, vmEnabled, disableNonTLS, customPath, prefix);
         }
 
         return new Response('Not Found', { status: 404 });
     }
 };
-
