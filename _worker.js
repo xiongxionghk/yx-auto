@@ -312,7 +312,7 @@ function generateLinksFromSource(list, user, workerDomain, disableNonTLS = false
 
         portsToGenerate.forEach(({ port, tls }) => {
             if (tls) {
-                const wsNodeName = `${nodeNameBase}-${port}-WS-TLS`;
+                // 去掉后缀，直接使用节点名称
                 const wsParams = new URLSearchParams({
                     encryption: 'none',
                     security: 'tls',
@@ -322,9 +322,9 @@ function generateLinksFromSource(list, user, workerDomain, disableNonTLS = false
                     host: workerDomain,
                     path: wsPath
                 });
-                links.push(`${proto}://${user}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(wsNodeName)}`);
+                links.push(`${proto}://${user}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(nodeNameBase)}`);
             } else {
-                const wsNodeName = `${nodeNameBase}-${port}-WS`;
+                // 去掉后缀，直接使用节点名称
                 const wsParams = new URLSearchParams({
                     encryption: 'none',
                     security: 'none',
@@ -332,7 +332,7 @@ function generateLinksFromSource(list, user, workerDomain, disableNonTLS = false
                     host: workerDomain,
                     path: wsPath
                 });
-                links.push(`${proto}://${user}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(wsNodeName)}`);
+                links.push(`${proto}://${user}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(nodeNameBase)}`);
             }
         });
     });
