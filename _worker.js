@@ -562,7 +562,20 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
                         if (match) {
                             const 节点地址 = match[1].replace(/[\[\]]/g, ''); // 移除IPv6的方括号
                             const 节点端口 = match[2] || 443;
-                            const 节点备注 = match[3] || 节点地址;
+                            let 节点备注 = match[3] || 节点地址;
+
+                            // 机场码转换
+                            const airportCodeMap = {
+                                'HKG': '香港', 'SIN': '新加坡', 'NRT': '东京', 'KIX': '大阪',
+                                'ICN': '首尔', 'TPE': '台北', 'LAX': '洛杉矶', 'SJC': '圣何塞',
+                                'SEA': '西雅图', 'FRA': '法兰克福', 'LHR': '伦敦', 'CDG': '巴黎',
+                                'AMS': '阿姆斯特丹', 'SYD': '悉尼', 'MEL': '墨尔本'
+                            };
+                            const airportMatch = 节点备注.match(/^([A-Z]{3})/);
+                            if (airportMatch && airportCodeMap[airportMatch[1]]) {
+                                节点备注 = 节点备注.replace(airportMatch[1], airportCodeMap[airportMatch[1]]);
+                            }
+
                             return {
                                 ip: 节点地址,
                                 port: parseInt(节点端口),
@@ -611,7 +624,20 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
                         if (match) {
                             const 节点地址 = match[1].replace(/[\[\]]/g, '');
                             const 节点端口 = match[2] || 443;
-                            const 节点备注 = match[3] || 节点地址;
+                            let 节点备注 = match[3] || 节点地址;
+
+                            // 机场码转换
+                            const airportCodeMap = {
+                                'HKG': '香港', 'SIN': '新加坡', 'NRT': '东京', 'KIX': '大阪',
+                                'ICN': '首尔', 'TPE': '台北', 'LAX': '洛杉矶', 'SJC': '圣何塞',
+                                'SEA': '西雅图', 'FRA': '法兰克福', 'LHR': '伦敦', 'CDG': '巴黎',
+                                'AMS': '阿姆斯特丹', 'SYD': '悉尼', 'MEL': '墨尔本'
+                            };
+                            const airportMatch = 节点备注.match(/^([A-Z]{3})/);
+                            if (airportMatch && airportCodeMap[airportMatch[1]]) {
+                                节点备注 = 节点备注.replace(airportMatch[1], airportCodeMap[airportMatch[1]]);
+                            }
+
                             return {
                                 ip: 节点地址,
                                 port: parseInt(节点端口),
