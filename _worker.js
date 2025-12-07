@@ -214,6 +214,25 @@ async function 请求优选API(urls, 默认端口 = '443', 超时时间 = 3000) 
 
 // 从GitHub获取优选IP（保留原有功能，同时支持优选API）
 async function fetchAndParseNewIPs(piu) {
+    // 机场码到地区名映射（支持常见机场码）
+    const airportCodeMap = {
+        'HKG': '香港',
+        'SIN': '新加坡',
+        'NRT': '东京',
+        'KIX': '大阪',
+        'ICN': '首尔',
+        'TPE': '台北',
+        'LAX': '洛杉矶',
+        'SJC': '圣何塞',
+        'SEA': '西雅图',
+        'FRA': '法兰克福',
+        'LHR': '伦敦',
+        'CDG': '巴黎',
+        'AMS': '阿姆斯特丹',
+        'SYD': '悉尼',
+        'MEL': '墨尔本'
+    };
+
     const url = piu || defaultIPURL;
     try {
         const response = await fetch(url);
@@ -228,10 +247,23 @@ async function fetchAndParseNewIPs(piu) {
             if (!trimmedLine) continue;
             const match = trimmedLine.match(regex);
             if (match) {
+                let name = match[3].trim() || match[1];
+
+                // 检查name中是否包含机场码，如果是则转换为中文地区名
+                // 格式可能是 "HKG-89.02MB/s" 或 "HKG"
+                const airportMatch = name.match(/^([A-Z]{3})/);
+                if (airportMatch) {
+                    const code = airportMatch[1];
+                    if (airportCodeMap[code]) {
+                        // 替换机场码为中文地区名，保留后面的速度信息
+                        name = name.replace(code, airportCodeMap[code]);
+                    }
+                }
+
                 results.push({
                     ip: match[1],
                     port: parseInt(match[2], 10),
-                    name: match[3].trim() || match[1]
+                    name: name
                 });
             }
         }
