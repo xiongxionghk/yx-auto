@@ -1317,6 +1317,12 @@ function generateHomePage(scuValue) {
                 <input type="text" id="githubUrl" placeholder="留空则使用默认地址" style="font-size: 15px;">
                 <small style="display: block; margin-top: 6px; color: #86868b; font-size: 13px;">自定义优选IP列表来源URL，留空则使用默认地址</small>
             </div>
+
+            <div class="form-group" style="margin-top: 12px;">
+                <label>节点名称前缀（可选）</label>
+                <input type="text" id="customPrefix" placeholder="输入 'ip' 显示IP，或输入自定义文本" style="font-size: 15px;">
+                <small style="display: block; margin-top: 6px; color: #86868b; font-size: 13px;">例如：输入 "香港" 则节点名为 "香港_节点名"，输入 "ip" 则显示IP地址</small>
+            </div>
             
             <div class="form-group" style="margin-top: 24px;">
                 <label>协议选择</label>
@@ -1519,6 +1525,7 @@ function generateHomePage(scuValue) {
             const ispTelecom = document.getElementById('ispTelecom').checked;
             
             const githubUrl = document.getElementById('githubUrl').value.trim();
+            const customPrefix = document.getElementById('customPrefix').value.trim();
             
             const currentUrl = new URL(window.location.href);
             const baseUrl = currentUrl.origin;
@@ -1545,7 +1552,12 @@ function generateHomePage(scuValue) {
             
             // 添加自定义路径
             if (customPath && customPath !== '/') {
-                subscriptionUrl += \`&path=\${encodeURIComponent(customPath)}\`;
+                subscriptionUrl += '&path=' + encodeURIComponent(customPath);
+            }
+            
+            // 添加自定义前缀
+            if (customPrefix) {
+                subscriptionUrl += '&prefix=' + encodeURIComponent(customPrefix);
             }
             
             let finalUrl = subscriptionUrl;
