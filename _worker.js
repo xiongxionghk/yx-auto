@@ -15,6 +15,7 @@ let scu = 'https://url.v1.mk/sub';  // 订阅转换地址
 // 默认优选域名列表
 const directDomains = [
     { name: "cloudflare.182682.xyz", domain: "cloudflare.182682.xyz" },
+    { domain: "cdns.doon.eu.org" },
     { domain: "freeyx.cloudflare88.eu.org" }
 ];
 
