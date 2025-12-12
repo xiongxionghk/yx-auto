@@ -20,7 +20,7 @@ const directDomains = [
 ];
 
 // 默认优选IP来源URL（使用自己的GitHub仓库）
-const defaultIPURL = 'https://raw.githubusercontent.com/xiongxionghk/bestip/main/bestip.txt';
+const defaultIPURL = 'https://raw.githubusercontent.com/xiongxionghk/bestip/main/cloudflare_ips.txt';
 
 // UUID验证
 function isValidUUID(str) {
