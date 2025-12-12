@@ -14,8 +14,19 @@ let scu = 'https://url.v1.mk/sub';  // 订阅转换地址
 
 // 默认优选域名列表
 const directDomains = [
-    { name: "cloudflare.182682.xyz", domain: "cloudflare.182682.xyz" },
+    
     { domain: "cdns.doon.eu.org" },
+    { name: "cloudflare.182682.xyz", domain: "cloudflare.182682.xyz" },
+    { domain: "freeyx.cloudflare88.eu.org" },
+    { domain: "bestcf.top" },
+    { domain: "cdn.2020111.xyz" },
+    { domain: "cf.0sm.com" },
+    { domain: "cf.090227.xyz" },
+    { domain: "cf.zhetengsha.eu.org" },
+    { domain: "cfip.1323123.xyz" },
+    { domain: "cloudflare-ip.mofashi.ltd" },
+    { domain: "cf.877771.xyz" },
+    { domain: "xn--b6gac.eu.org" }
     { domain: "freeyx.cloudflare88.eu.org" }
 ];
 
