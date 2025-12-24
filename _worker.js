@@ -14,20 +14,18 @@ let scu = 'https://url.v1.mk/sub';  // 订阅转换地址
 
 // 默认优选域名列表
 const directDomains = [
-    
-    { domain: "cdns.doon.eu.org" },
+    { name: "cdns.doon.eu.org", domain: "cdns.doon.eu.org" },
     { name: "cloudflare.182682.xyz", domain: "cloudflare.182682.xyz" },
-    { domain: "freeyx.cloudflare88.eu.org" },
-    { domain: "bestcf.top" },
-    { domain: "cdn.2020111.xyz" },
-    { domain: "cf.0sm.com" },
-    { domain: "cf.090227.xyz" },
-    { domain: "cf.zhetengsha.eu.org" },
-    { domain: "cfip.1323123.xyz" },
-    { domain: "cloudflare-ip.mofashi.ltd" },
-    { domain: "cf.877771.xyz" },
-    { domain: "xn--b6gac.eu.org" }
-    { domain: "freeyx.cloudflare88.eu.org" }
+    { name: "freeyx.cloudflare88.eu.org", domain: "freeyx.cloudflare88.eu.org" },
+    { name: "bestcf.top", domain: "bestcf.top" },
+    { name: "cdn.2020111.xyz", domain: "cdn.2020111.xyz" },
+    { name: "cf.0sm.com", domain: "cf.0sm.com" },
+    { name: "cf.090227.xyz", domain: "cf.090227.xyz" },
+    { name: "cf.zhetengsha.eu.org", domain: "cf.zhetengsha.eu.org" },
+    { name: "cfip.1323123.xyz", domain: "cfip.1323123.xyz" },
+    { name: "cloudflare-ip.mofashi.ltd", domain: "cloudflare-ip.mofashi.ltd" },
+    { name: "cf.877771.xyz", domain: "cf.877771.xyz" },
+    { name: "xn--b6gac.eu.org", domain: "xn--b6gac.eu.org" }
 ];
 
 // 默认优选IP来源URL（使用自己的GitHub仓库）
@@ -286,7 +284,15 @@ async function fetchAndParseNewIPs(piu) {
 }
 
 // 生成VLESS链接
-function generateLinksFromSource(list, user, workerDomain, disableNonTLS = false, customPath = '/') {
+function generateLinksFromSource(list, user, workerDomain, disableNonTLS = false, customPath = '/', prefix = '') {
+    // 机场码到地区名映射
+    const airportCodeMap = {
+        'HKG': '香港', 'SIN': '新加坡', 'NRT': '东京', 'KIX': '大阪',
+        'ICN': '首尔', 'TPE': '台北', 'LAX': '洛杉矶', 'SJC': '圣何塞',
+        'SEA': '西雅图', 'FRA': '法兰克福', 'LHR': '伦敦', 'CDG': '巴黎',
+        'AMS': '阿姆斯特丹', 'SYD': '悉尼', 'MEL': '墨尔本'
+    };
+
     const CF_HTTP_PORTS = [80, 8080, 8880, 2052, 2082, 2086, 2095];
     const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
     const defaultHttpsPorts = [443];
@@ -298,8 +304,24 @@ function generateLinksFromSource(list, user, workerDomain, disableNonTLS = false
     list.forEach(item => {
         let nodeNameBase = item.isp ? item.isp.replace(/\s/g, '_') : (item.name || item.domain || item.ip);
         if (item.colo && item.colo.trim()) {
-            nodeNameBase = `${nodeNameBase}-${item.colo.trim()}`;
+            let colo = item.colo.trim();
+
+            // 转换机场码为中文地区名
+            const coloUpper = colo.toUpperCase();
+            if (airportCodeMap[coloUpper]) {
+                colo = airportCodeMap[coloUpper];
+            }
+
+            nodeNameBase = `${nodeNameBase}-${colo}`;
         }
+
+        // 添加自定义前缀
+        if (prefix === 'ip') {
+            nodeNameBase = `${item.ip}_${nodeNameBase}`;
+        } else if (prefix) {
+            nodeNameBase = `${prefix}_${nodeNameBase}`;
+        }
+
         const safeIP = item.ip.includes(':') ? `[${item.ip}]` : item.ip;
 
         let portsToGenerate = [];
@@ -531,15 +553,20 @@ async function handleSubscriptionRequest(request, user, customDomain, piu, ipv4E
         // 确保至少有一个协议被启用
         const hasProtocol = evEnabled || etEnabled || vmEnabled;
         const useVL = hasProtocol ? evEnabled : true;  // 如果没有选择任何协议，默认使用VLESS
+        const useTJ = hasProtocol ? etEnabled : false;
+        const useVM = hasProtocol ? vmEnabled : false;
 
         if (useVL) {
-            finalLinks.push(...generateLinksFromSource(list, user, nodeDomain, disableNonTLS, wsPath));
+            const vlessLinks = generateLinksFromSource(list, user, nodeDomain, disableNonTLS, wsPath, prefix);
+            finalLinks.push(...vlessLinks);
         }
-        if (etEnabled) {
-            finalLinks.push(...await generateTrojanLinksFromSource(list, user, nodeDomain, disableNonTLS, wsPath));
+        if (useTJ) {
+            const trojanLinks = await generateTrojanLinksFromSource(list, user, nodeDomain, disableNonTLS, wsPath);
+            finalLinks.push(...trojanLinks);
         }
-        if (vmEnabled) {
-            finalLinks.push(...generateVMessLinksFromSource(list, user, nodeDomain, disableNonTLS, wsPath));
+        if (useVM) {
+            const vmessLinks = generateVMessLinksFromSource(list, user, nodeDomain, disableNonTLS, wsPath);
+            finalLinks.push(...vmessLinks);
         }
     }
 
